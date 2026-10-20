@@ -1,0 +1,1 @@
+"""Core primitives: process attach, memory rw, module registry."""
