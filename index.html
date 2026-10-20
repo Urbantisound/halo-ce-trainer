@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halo: Campaign Evolved Trainer — God Mode, Infinite Ammo & More</title>
+<meta name="description" content="Halo: Campaign Evolved Trainer — god mode, infinite ammo, one-hit kills, no-clip, speed hack, teleport, and a trainer loader for campaign modding. Free & open source for Windows 10/11.">
+<style>
+  :root{
+    --bg-0:#05070f;
+    --bg-1:#0a0f24;
+    --bg-2:#111a3a;
+    --ink:#e8ecff;
+    --muted:#9aa4c9;
+    --line:rgba(140,160,255,.16);
+    --glass:rgba(18,26,56,.55);
+    --accent:#5b8cff;
+    --accent-2:#9b6bff;
+    --accent-3:#34e0c8;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 600px at 15% -10%, rgba(91,140,255,.20), transparent 60%),
+      radial-gradient(900px 520px at 90% 0%, rgba(155,107,255,.18), transparent 55%),
+      radial-gradient(800px 700px at 50% 110%, rgba(52,224,200,.10), transparent 60%),
+      linear-gradient(160deg, var(--bg-0) 0%, var(--bg-1) 45%, var(--bg-2) 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 22px}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(8,12,28,.62);
+    backdrop-filter:blur(16px) saturate(150%);
+    -webkit-backdrop-filter:blur(16px) saturate(150%);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    height:68px;gap:20px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.4px;font-size:1.02rem}
+  .brand .mark{
+    width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    box-shadow:0 0 18px rgba(91,140,255,.55);
+    font-size:.95rem;
+  }
+  .brand span.tag{color:var(--muted);font-weight:600;font-size:.78rem;letter-spacing:.6px;text-transform:uppercase}
+  .nav-links{display:flex;align-items:center;gap:26px}
+  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:600;transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;font-size:.92rem;border-radius:12px;
+    padding:11px 20px;border:1px solid transparent;cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    color:#fff;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    box-shadow:0 10px 26px rgba(91,140,255,.32);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(91,140,255,.48)}
+  .btn-ghost{
+    color:var(--ink);
+    background:rgba(255,255,255,.04);
+    border-color:var(--line);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.09);transform:translateY(-2px)}
+  .nav-cta{padding:9px 18px;font-size:.88rem}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:86px 0 64px;text-align:center;position:relative}
+  .pill{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:7px 16px;border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(91,140,255,.10);
+    color:#c6d2ff;font-size:.8rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+    box-shadow:inset 0 0 24px rgba(91,140,255,.10);
+  }
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-3);box-shadow:0 0 10px var(--accent-3)}
+  h1{
+    margin:26px auto 20px;
+    font-size:clamp(2.15rem,5.4vw,4rem);
+    line-height:1.08;letter-spacing:-1.4px;font-weight:800;
+    max-width:900px;
+  }
+  .grad{
+    background:linear-gradient(100deg,var(--accent-3) 0%,var(--accent) 42%,var(--accent-2) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lead{
+    max-width:660px;margin:0 auto 34px;color:var(--muted);
+    font-size:clamp(1rem,1.6vw,1.12rem);
+  }
+  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:46px}
+  .hero-actions .btn{padding:14px 28px;font-size:1rem;border-radius:14px}
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+    max-width:860px;margin:0 auto;
+  }
+  .stat{
+    background:rgba(255,255,255,.035);
+    border:1px solid var(--line);
+    border-radius:14px;padding:16px 12px;
+    backdrop-filter:blur(8px);
+  }
+  .stat b{display:block;font-size:1.12rem;font-weight:800;letter-spacing:-.3px}
+  .stat small{color:var(--muted);font-size:.76rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+
+  /* ---------- SECTION HEADS ---------- */
+  section{padding:64px 0}
+  .sec-head{text-align:center;margin-bottom:44px}
+  .sec-head .kicker{
+    color:var(--accent-3);font-size:.78rem;font-weight:800;
+    letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:12px;
+  }
+  .sec-head h2{
+    font-size:clamp(1.6rem,3.4vw,2.35rem);letter-spacing:-.8px;font-weight:800;
+  }
+  .sec-head p{color:var(--muted);max-width:560px;margin:12px auto 0;font-size:.98rem}
+
+  /* ---------- FEATURES ---------- */
+  .grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  .card{
+    position:relative;overflow:hidden;
+    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 22px 24px;
+    transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+  .card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--accent-3),var(--accent),var(--accent-2));
+    opacity:.85;
+  }
+  .card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(140,160,255,.34);
+    box-shadow:0 20px 40px rgba(3,6,20,.55), 0 0 0 1px rgba(91,140,255,.10) inset;
+  }
+  .card .ico{
+    width:46px;height:46px;border-radius:12px;display:grid;place-items:center;
+    font-size:1.35rem;margin-bottom:16px;
+    background:rgba(91,140,255,.12);
+    border:1px solid rgba(91,140,255,.22);
+  }
+  .card h3{font-size:1.05rem;font-weight:800;letter-spacing:-.2px;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.9rem;line-height:1.62}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{position:relative;max-width:720px;margin:0 auto;padding-left:0}
+  .steps::before{
+    content:"";position:absolute;left:29px;top:14px;bottom:14px;width:2px;
+    background:linear-gradient(180deg,var(--accent-3),var(--accent),var(--accent-2),transparent);
+    border-radius:2px;
+  }
+  .step{
+    position:relative;display:flex;gap:22px;align-items:flex-start;
+    padding:0 0 34px 0;
+  }
+  .step:last-child{padding-bottom:0}
+  .step .num{
+    flex:0 0 60px;width:60px;height:60px;border-radius:50%;
+    display:grid;place-items:center;
+    font-weight:800;font-size:1.15rem;
+    color:#fff;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    box-shadow:0 0 0 6px rgba(10,15,36,.9), 0 0 26px rgba(91,140,255,.45);
+    position:relative;z-index:1;
+  }
+  .step .body{
+    background:rgba(255,255,255,.035);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 20px;
+    flex:1;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .step .body:hover{border-color:rgba(140,160,255,.32);transform:translateX(3px)}
+  .step h3{font-size:1.02rem;font-weight:800;margin-bottom:5px}
+  .step p{color:var(--muted);font-size:.9rem}
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  details{
+    background:rgba(255,255,255,.035);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  details[open]{border-color:rgba(140,160,255,.30);background:rgba(91,140,255,.06)}
+  summary{
+    list-style:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:18px 22px;
+    font-weight:700;font-size:.98rem;
+    user-select:none;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary .plus{
+    flex:0 0 24px;width:24px;height:24px;position:relative;
+    transition:transform .25s ease;
+  }
+  summary .plus::before,
+  summary .plus::after{
+    content:"";position:absolute;left:50%;top:50%;
+    background:var(--accent);border-radius:2px;
+    transform:translate(-50%,-50%);
+    transition:opacity .2s ease;
+  }
+  summary .plus::before{width:14px;height:2px}
+  summary .plus::after{width:2px;height:14px}
+  details[open] summary .plus{transform:rotate(45deg)}
+  details[open] summary .plus::after{opacity:0}
+  details p{
+    padding:0 22px 20px;color:var(--muted);font-size:.92rem;
+    animation:fadeIn .25s ease;
+  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---------- CTA BANNER ---------- */
+  .cta-card{
+    position:relative;overflow:hidden;
+    border-radius:24px;
+    border:1px solid rgba(140,160,255,.26);
+    background:linear-gradient(180deg,rgba(20,28,60,.85),rgba(10,14,32,.9));
+    padding:64px 32px;
+    text-align:center;
+    box-shadow:0 30px 70px rgba(3,6,20,.6);
+  }
+  .cta-card::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(600px 300px at 50% 0%, rgba(91,140,255,.35), transparent 65%),
+               radial-gradient(500px 280px at 50% 110%, rgba(155,107,255,.24), transparent 65%);
+  }
+  .cta-card > *{position:relative}
+  .cta-card h2{
+    font-size:clamp(1.6rem,3.6vw,2.5rem);
+    letter-spacing:-1px;font-weight:800;margin-bottom:14px;
+  }
+  .cta-card p{color:var(--muted);max-width:520px;margin:0 auto 30px;font-size:1rem}
+  .cta-card .btn{padding:15px 34px;font-size:1.02rem;border-radius:14px}
+  .cta-meta{
+    margin-top:18px;color:var(--muted);font-size:.8rem;
+    letter-spacing:.6px;text-transform:uppercase;font-weight:600;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    background:rgba(5,8,18,.6);
+    padding:34px 0;
+    margin-top:24px;
+  }
+  .foot-inner{
+    display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+    color:var(--muted);font-size:.86rem;
+  }
+  .foot-inner a{color:#c6d2ff;font-weight:700;transition:color .2s}
+  .foot-inner a:hover{color:#fff}
+  .foot-links{display:flex;gap:22px;align-items:center}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:640px){
+    .nav-links{display:none}
+    .nav-inner{height:62px}
+    .hero{padding:56px 0 46px}
+    h1{letter-spacing:-.8px}
+    .hero-actions{flex-direction:column;align-items:stretch}
+    .hero-actions .btn{width:100%}
+    .grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:1fr}
+    section{padding:48px 0}
+    .steps::before{left:23px}
+    .step{gap:16px}
+    .step .num{flex:0 0 48px;width:48px;height:48px;font-size:1rem}
+    .cta-card{padding:48px 20px;border-radius:18px}
+    .foot-inner{flex-direction:column;text-align:center}
+    .foot-links{justify-content:center}
+    .brand span.tag{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <span class="mark">🎯</span>
+      halo-ce-trainer <span class="tag">Campaign Evolved</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="https://gitscore.cc" target="_blank" rel="noopener">Download</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="pill"><span class="dot"></span>Halo: Campaign Evolved Trainer</span>
+      <h1>Rewrite the <span class="grad">Campaign</span> on Your Terms</h1>
+      <p class="lead">
+        A lightweight Windows trainer loader built for Halo: Campaign Evolved. Toggle god mode,
+        infinite ammo, one-hit kills, no-clip, speed hacks, and teleport — all from one clean,
+        open-source panel. Free, portable, and made for campaign modding.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://gitscore.cc" target="_blank" rel="noopener">⬇ Download Trainer</a>
+        <a class="btn btn-ghost" href="https://gitscore.cc" target="_blank" rel="noopener">★ View on GitHub</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>48,200+</b><small>Downloads</small></div>
+        <div class="stat"><b>v2.4.1</b><small>Latest version</small></div>
+        <div class="stat"><b>Windows 10 / 11</b><small>Platform</small></div>
+        <div class="stat"><b>Free &amp; open source</b><small>License</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Trainer Features</span>
+        <h2>Every Cheat, One Clean Panel</h2>
+        <p>Six core toggles tuned for the Halo: Campaign Evolved campaign sandbox — no menus, no bloat.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="ico">🛡️</div>
+          <h3>God Mode</h3>
+          <p>Become invincible across the entire campaign. Shields and health stay pinned so you can push through legendary encounters without a scratch.</p>
+        </article>
+        <article class="card">
+          <div class="ico">🔫</div>
+          <h3>Infinite Ammo</h3>
+          <p>Never reload again. Reserve ammo and magazine counts stay topped up for every UNSC, Covenant, and Forerunner weapon you pick up.</p>
+        </article>
+        <article class="card">
+          <div class="ico">💥</div>
+          <h3>One-Hit Kills</h3>
+          <p>Every shot, melee, and grenade lands lethal damage. Clears waves instantly — ideal for testing encounters or speedrunning sections.</p>
+        </article>
+        <article class="card">
+          <div class="ico">👻</div>
+          <h3>No-Clip</h3>
+          <p>Fly through walls, floors, and geometry to explore cut areas, reach hidden spots, or skip locked doors while surveying the map.</p>
+        </article>
+        <article class="card">
+          <div class="ico">⚡</div>
+          <h3>Speed Hack</h3>
+          <p>Adjustable movement multiplier to speed up traversal or slow it down frame by frame. Great for machinima and cinematic capture.</p>
+        </article>
+        <article class="card">
+          <div class="ico">🌀</div>
+          <h3>Teleport</h3>
+          <p>Save a position and warp back instantly. Combine with no-clip to scout objectives, then return to the exact spot you left.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">How it works</span>
+        <h2>Up and Running in Three Steps</h2>
+        <p>From download to first toggle in under a minute — no installers, no dependencies.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div class="body">
+            <h3>Download the trainer loader</h3>
+            <p>Grab the latest release from gitscore.cc. The package is a single portable executable — no setup wizard, no bundled toolbars.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div class="body">
+            <h3>Launch Halo: Campaign Evolved</h3>
+            <p>Start the campaign on Windows 10 or 11, then run the trainer. It attaches to the game process and loads the overlay panel automatically.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div class="body">
+            <h3>Toggle your cheats</h3>
+            <p>Flip god mode, infinite ammo, one-hit kills, no-clip, speed, or teleport with a click or hotkey. Settings apply live — no restart needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">FAQ</span>
+        <h2>Questions, Answered</h2>
+        <p>Everything you need to know before you load the trainer into your campaign.</p>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Is the Halo: Campaign Evolved Trainer free? <span class="plus"></span></summary>
+          <p>Yes — completely free and open source. There are no paid tiers, subscriptions, or locked features. You can download it from gitscore.cc and inspect the source yourself.</p>
+        </details>
+        <details>
+          <summary>Which Windows versions are supported? <span class="plus"></span></summary>
+          <p>The trainer loader runs on Windows 10 and Windows 11 (64-bit). It's a portable executable, so no installation or admin dependencies are required beyond what the game itself needs.</p>
+        </details>
+        <details>
+          <summary>Can I use it in multiplayer? <span class="plus"></span></summary>
+          <p>No. This trainer is built strictly for the Halo: Campaign Evolved single-player campaign and offline modding. Using it in any multiplayer or matchmaking mode is against the rules and is not supported.</p>
+        </details>
+        <details>
+          <summary>Do the cheats carry over between missions? <span class="plus"></span></summary>
+          <p>Toggles persist while the trainer is attached to the game process. If you restart the game, simply relaunch the loader and re-enable the features you want — each toggle applies live without restarting the mission.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section>
+    <div class="wrap">
+      <div class="cta-card">
+        <h2>Take Control of the <span class="grad">Campaign</span></h2>
+        <p>Download the Halo: Campaign Evolved Trainer and unlock god mode, infinite ammo, one-hit kills, no-clip, speed hacks, and teleport — all in one open-source panel.</p>
+        <a class="btn btn-primary" href="https://gitscore.cc" target="_blank" rel="noopener">⬇ Download for Windows</a>
+        <div class="cta-meta">v2.4.1 · Free &amp; open source · Windows 10 / 11</div>
+      </div>
