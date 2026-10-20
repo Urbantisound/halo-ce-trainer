@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "halo-ce-trainer"
+version = "0.9.3"
+description = "Trainer toolkit for Halo: Campaign Evolved (single-player modding)"
+requires-python = ">=3.10"
+dependencies = [
+    'tomli>=2.0.1 ; python_version < "3.11"',
+    "pywin32>=306",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.4", "black>=24"]
+
+[project.scripts]
+halo-ce-trainer = "run:main"
+
+[tool.setuptools.packages.find]
+include = ["halo_ce_trainer*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
