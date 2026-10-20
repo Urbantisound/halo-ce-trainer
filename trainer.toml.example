@@ -1,0 +1,17 @@
+# Example trainer configuration — copy to trainer.toml
+
+process_name = "HaloCampaignEvolved.exe"
+game_build   = "2026.1"
+log_level    = "INFO"
+
+[modules]
+godmode       = true
+infinite_ammo = true
+esp           = false
+aimbot        = false
+
+[overlay]
+enabled       = true
+opacity       = 0.82
+hotkey_toggle = "F8"
+font          = "Consolas"
