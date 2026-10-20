@@ -1,0 +1,1 @@
+"""Game build offsets and byte signatures for Halo: Campaign Evolved."""
