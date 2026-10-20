@@ -1,0 +1,1 @@
+"""Tkinter-based trainer control panel."""
